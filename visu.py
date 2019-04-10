@@ -11,11 +11,9 @@ urls_col = db["urls"]
 
 pages = {url_doc['page_name']: url_doc['url'] for url_doc in urls_col.find()}
 
-# Set up data
 x, y = range(5), range(10, 60, 10)
 source = ColumnDataSource(data=dict(x=x, y=y))
 
-# Set up plot
 plot = figure(tools="crosshair,pan,reset,save,wheel_zoom")
 plot.line('x', 'y', source=source)
 
@@ -26,9 +24,8 @@ def update(attrname, old, new):
     docs = scores_col.find({'platform': platform, 'page': page})
     ti, sc = [], []
     for doc in docs:
-        ti.append( doc['timestamp'].day)
+        ti.append((doc['timestamp'].year*100 + doc['timestamp'].month) * 100 +doc['timestamp'].day)
         sc.append(doc['score'])
-    print ti, sc
     source.data = dict(x=ti, y=sc)
 
 # Set up widgets
